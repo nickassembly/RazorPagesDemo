@@ -1,24 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RazorPagesDemo.Models;
 using RazorPagesDemo.Services;
 
 namespace RazorPagesDemo.Pages.Employees
 {
-    public class DetailsModel : PageModel
+    public class EditModel : PageModel
     {
         private readonly IEmployeeRepository _employeeRepository;
 
-        public Employee Employee { get; private set; }
-
-        public DetailsModel(IEmployeeRepository employeeRepository)
+        public EditModel(IEmployeeRepository employeeRepository)
         {
             _employeeRepository = employeeRepository;
         }
+
+        public Employee Employee { get; set; }
 
         public IActionResult OnGet(int id)
         {
@@ -31,6 +27,5 @@ namespace RazorPagesDemo.Pages.Employees
 
             return Page();
         }
-
     }
 }
