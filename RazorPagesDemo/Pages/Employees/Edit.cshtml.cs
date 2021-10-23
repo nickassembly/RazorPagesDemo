@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RazorPagesDemo.Models;
 using RazorPagesDemo.Services;
@@ -15,6 +16,9 @@ namespace RazorPagesDemo.Pages.Employees
         }
 
         public Employee Employee { get; set; }
+
+        [BindProperty]
+        public IFormFile Photo { get; set; }
 
         public IActionResult OnGet(int id)
         {
