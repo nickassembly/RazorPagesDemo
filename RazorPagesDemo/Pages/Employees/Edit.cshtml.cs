@@ -41,6 +41,12 @@ namespace RazorPagesDemo.Pages.Employees
         {
             if(Photo != null)
             {
+                if (employee.PhotoPath != null)
+                {
+                    string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", employee.PhotoPath);
+                    System.IO.File.Delete(filePath);
+                }
+
                 employee.PhotoPath = ProcessUploadedFile();
             }
 
