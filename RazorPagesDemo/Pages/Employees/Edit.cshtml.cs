@@ -58,7 +58,7 @@ namespace RazorPagesDemo.Pages.Employees
             return RedirectToPage("Index");
         }
 
-        public void OnPostUpdateNotificationPreferences(int id)
+        public IActionResult OnPostUpdateNotificationPreferences(int id)
         {
             if (Notify)
             {
@@ -69,7 +69,9 @@ namespace RazorPagesDemo.Pages.Employees
                 Message = "You have turned off email notifications";
             }
 
-           Employee = _employeeRepository.GetEmployee(id);
+            TempData["message"] = Message;
+
+            return RedirectToPage("Details", new { id = id });
         }
 
         private string ProcessUploadedFile()
