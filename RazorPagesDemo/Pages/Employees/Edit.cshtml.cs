@@ -20,6 +20,7 @@ namespace RazorPagesDemo.Pages.Employees
             _webHostEnvironment = webHostEnvironment;
         }
 
+        [BindProperty]
         public Employee Employee { get; set; }
 
         [BindProperty]
@@ -29,9 +30,16 @@ namespace RazorPagesDemo.Pages.Employees
         public bool Notify { get; set; }
         public string Message { get; set; }
 
-        public IActionResult OnGet(int id)
+        public IActionResult OnGet(int? id)
         {
-            Employee = _employeeRepository.GetEmployee(id);
+            if (id.HasValue)
+            {
+                Employee = _employeeRepository.GetEmployee(id.Value);
+            }
+            else
+            {
+                Employee = new Employee();
+            }
 
             if (Employee == null)
             {
@@ -41,21 +49,34 @@ namespace RazorPagesDemo.Pages.Employees
             return Page();
         }
 
-        public IActionResult OnPost(Employee employee)
+        public IActionResult OnPost()
         {
-            if(Photo != null)
+            if (ModelState.IsValid)
             {
-                if (employee.PhotoPath != null)
+                if (Photo != null)
                 {
-                    string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", employee.PhotoPath);
-                    System.IO.File.Delete(filePath);
+                    if (Employee.PhotoPath != null)
+                    {
+                        string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", Employee.PhotoPath);
+                        System.IO.File.Delete(filePath);
+                    }
+
+                    Employee.PhotoPath = ProcessUploadedFile();
                 }
 
-                employee.PhotoPath = ProcessUploadedFile();
+                if (Employee.Id > 0)
+                {
+                    Employee = _employeeRepository.Update(Employee);
+                }
+                else
+                {
+                    Employee = _employeeRepository.Add(Employee);
+                }
+                    return RedirectToPage("Index");
             }
 
-           Employee = _employeeRepository.Update(employee);
-            return RedirectToPage("Index");
+            return Page();
+
         }
 
         public IActionResult OnPostUpdateNotificationPreferences(int id)

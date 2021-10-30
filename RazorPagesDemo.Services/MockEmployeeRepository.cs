@@ -19,6 +19,13 @@ namespace RazorPagesDemo.Services
             };
         }
 
+        public Employee Add(Employee newEmployee)
+        {
+            newEmployee.Id = _employeeList.Max(e => e.Id) + 1;
+            _employeeList.Add(newEmployee);
+            return newEmployee;
+        }
+
         public IEnumerable<Employee> GetAllEmployees()
         {
             return _employeeList;
