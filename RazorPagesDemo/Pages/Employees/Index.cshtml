@@ -12,6 +12,15 @@
     }
 </style>
 
+<form method="get">
+    <div class="input-group">
+        <input class="form-control" asp-for="SearchTerm" />
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
 @*@await Component.InvokeAsync("HeadCount")*@
 <vc:head-count department-name="@null"></vc:head-count>
 

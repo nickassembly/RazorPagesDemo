@@ -80,5 +80,16 @@ namespace RazorPagesDemo.Services
                     Count = g.Count()
                 }).ToList();
         }
+
+        public IEnumerable<Employee> Search(string searchTerm)
+        {
+            if(string.IsNullOrEmpty(searchTerm))
+            {
+                return _employeeList;
+            }
+
+            return _employeeList.Where(e => e.Name.Contains(searchTerm) ||
+                                            e.Email.Contains(searchTerm));
+        }
     }
 }
