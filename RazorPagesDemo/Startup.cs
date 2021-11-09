@@ -31,7 +31,7 @@ namespace RazorPagesDemo
             });
 
             services.AddRazorPages();
-            services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
+            services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
 
             services.Configure<RouteOptions>(options => 
             {
