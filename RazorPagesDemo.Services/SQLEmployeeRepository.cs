@@ -1,4 +1,5 @@
-﻿using RazorPagesDemo.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using RazorPagesDemo.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
