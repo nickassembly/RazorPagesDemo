@@ -57,7 +57,9 @@ namespace RazorPagesDemo.Services
 
         public Employee GetEmployee(int id)
         {
-            return _context.Employees.Find(id);
+            return _context.Employees.FromSqlRaw<Employee>("spGetEmployeeById {0}", id)
+                                     .ToList()
+                                     .FirstOrDefault();
         }
 
         public IEnumerable<Employee> Search(string searchTerm)
