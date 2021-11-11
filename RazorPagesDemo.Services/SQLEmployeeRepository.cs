@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using RazorPagesDemo.Models;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,11 @@ namespace RazorPagesDemo.Services
         }
         public Employee Add(Employee newEmployee)
         {
-            _context.Employees.Add(newEmployee);
-            _context.SaveChanges();
+            _context.Database.ExecuteSqlRaw("spInsertEmployee {0}, {1}, {2}, {3}",
+                                    newEmployee.Name,
+                                    newEmployee.Email,
+                                    newEmployee.PhotoPath,
+                                    newEmployee.Department);
             return newEmployee;
         }
 
@@ -53,12 +57,16 @@ namespace RazorPagesDemo.Services
 
         public IEnumerable<Employee> GetAllEmployees()
         {
-            return _context.Employees;
+            return _context.Employees
+                .FromSqlRaw<Employee>("SELECT * FROM Employees")
+                .ToList();
         }
 
         public Employee GetEmployee(int id)
         {
-            return _context.Employees.FromSqlRaw<Employee>("spGetEmployeeById {0}", id)
+            SqlParameter parameter = new SqlParameter("@Id", id);
+            
+            return _context.Employees.FromSqlRaw<Employee>("spGetEmployeeById @Id", parameter)
                                      .ToList()
                                      .FirstOrDefault();
         }
